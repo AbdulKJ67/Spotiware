@@ -274,12 +274,30 @@ function isSongLiked(songId) {
 function toggleLikedSong(songId) {
     ensureLikedPlaylist();
     if (isSongLiked(songId)) {
-        removeSongFromPlaylist(LIKED_PLAYLIST_ID, songId);
+      removeSongFromPlaylist(LIKED_PLAYLIST_ID, songId);
     } else {
-        addSongToPlaylist(LIKED_PLAYLIST_ID, songId);
+      addSongToPlaylist(LIKED_PLAYLIST_ID, songId);
     }
     renderPlaylistList();
 }
+
+let nextAudioPreload = null;
+
+
+function preloadNextSong() {
+  const nextIndex = (currentIndex + 1) % order.length;
+  const nextSong = order[nextIndex];
+
+  // Hindari preload ulang kalau lagu yang sama sudah di-preload
+  if (nextAudioPreload && nextAudioPreload.src.includes(encodeURI(nextSong.songPath))) {
+      return;
+    }
+
+  nextAudioPreload = new Audio();
+  nextAudioPreload.preload = "auto";
+  nextAudioPreload.src = nextSong.songPath;
+}
+
 
 let libraryFilterQuery = '';
 
@@ -472,6 +490,7 @@ function attachPlaylistButtonEvents() {
             const playlist = getPlaylists().find(p => p.id === playlistId);
             if (playlist) openPlaylistDetail(playlist);
             renderPlaylistList();
+            preloadNextSong();
         });
     });
 }
@@ -806,6 +825,7 @@ function renderHistory() {
 
             highlightCurrentSong();
             updateNowBar();
+            preloadNextSong();
         });
     });
 }
@@ -1034,6 +1054,7 @@ const playNextSong = () => {
     addToHistory(getCurrentSong());
     highlightCurrentSong();
     updateNowBar();
+    preloadNextSong();
 };
 
 const playPrevSong = () => {
@@ -1044,6 +1065,7 @@ const playPrevSong = () => {
     addToHistory(getCurrentSong());
     highlightCurrentSong();
     updateNowBar();
+    preloadNextSong();
 };
 
 let forward = document.getElementById('forward');
@@ -1754,6 +1776,7 @@ function playSongFromList(songId, songList) {
 
     highlightCurrentSong();
     updateNowBar();
+    preloadNextSong();
 }
 
 function closePlaylistDetailView() {
