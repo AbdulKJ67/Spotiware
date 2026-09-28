@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>Spotiware</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/pplglogo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.css"
+        integrity="sha512-NhLySQDkiKSKnT+R795uaHWRQ7D3VuIvgeOLCK8cWq4w5fq4sWF90gj8eURpTqn/f1mFzqClpOz8JPlgVTLfFw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="left-half">
+            <div class="logo"><img src="img/pplglogo.png" alt="PPLG Logo"></div>
+            <div class="home-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="search-bar">
+                <div class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <input type="text" class="input-box" placeholder="Search songs">
+                <div class="browse"><i class="fa-solid fa-folder-open"></i></div>
+            </div>
+        </div>
+        <div class="right-half">
+            <div class="right-half-p1">
+                <a href="about.html" class="nav-text" style="text-decoration: none;">About</a>
+                <a href="support.html" class="nav-text" style="text-decoration: none;">Support</a>
+                <p class="nav-text" id="historyNavBtn" style="cursor:pointer;">History</p>
+            </div>
+            <div class="right-half-p2">
+                <div class="nav-text notify-btn"><i class="fa-regular fa-circle-down"></i> Install App</div>
+                <div class="nav-text notify-btn">Sign up</div>
+                <button class="login-btn notify-btn">Log in</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <div class="main">
+        <div class="main-left-part">
+            <div class="library">
+                <button class="library-collapse-btn" id="libraryCollapseBtn" title="Collapse Your Library">
+                    <i class="fa-solid fa-table-columns"></i>
+                </button>
+                <p id="libraryTitleText">Your Library</p>
+                <div class="library-icons">
+                    <button class="create-playlist-btn" id="newPlaylistBtn" title="Buat playlist baru">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button class="library-expand-btn" id="libraryExpandBtn" title="Perbesar Your Library">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="library-tabs">
+                <button class="library-tab active">Playlists</button>
+            </div>
+            <div class="library-toolbar">
+                <button class="library-search-btn" id="libraryFilterBtn" title="Cari di Library">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <input type="text" id="libraryFilterInput" class="library-search-input"
+                    placeholder="Search in Your Library">
+                <div class="library-sort" id="librarySortBtn">
+                    <span id="librarySortLabel">Recents</span> <i class="fa-solid fa-bars-staggered"
+                        id="librarySortIcon"></i>
+                    <div class="library-sort-menu" id="librarySortMenu">
+                        <p class="sort-menu-title">Sort by</p>
+                        <div class="sort-menu-item active" data-sort="recents">Recents <i
+                                class="fa-solid fa-check sort-check"></i></div>
+                        <div class="sort-menu-item" data-sort="added">Recently Added <i
+                                class="fa-solid fa-check sort-check"></i></div>
+                        <div class="sort-menu-item" data-sort="alpha">Alphabetical <i
+                                class="fa-solid fa-check sort-check"></i></div>
+                        <div class="sort-menu-item" data-sort="creator">Creator <i
+                                class="fa-solid fa-check sort-check"></i></div>
+                        <p class="sort-menu-title">View as</p>
+                        <div class="sort-view-icons">
+                            <button class="view-icon-btn active" data-view="list" title="List"><i
+                                    class="fa-solid fa-list"></i></button>
+                            <button class="view-icon-btn" data-view="compact" title="Compact"><i
+                                    class="fa-solid fa-bars"></i></button>
+                            <button class="view-icon-btn" data-view="grid" title="Compact grid"><i
+                                    class="fa-solid fa-grip"></i></button>
+                            <button class="view-icon-btn" data-view="gridlarge" title="Grid"><i
+                                    class="fa-solid fa-table-cells-large"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-container" id="playlistList"></div>
+            <table class="library-compact-table" id="libraryCompactTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date added</th>
+                        <th>Played</th>
+                    </tr>
+                </thead>
+                <tbody id="libraryCompactTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Main: right part -->
+        <div class="main-right-part">
+            <div class="music-section">
+                <div class="music-section-header">
+                    <h2>Chill & Aesthetic Vibes</h2>
+                    <span class="show-all-link" data-title="Chill & Aesthetic Vibes" data-start="0" data-end="30">Show
+                        all</span>
+                </div>
+                <div class="songs-wrapper">
+                    <div class="songs" id="section-1"></div>
+                    <button class="scroll-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="scroll-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="playlist-detail-view" id="playlistDetailView">
+                <div class="playlist-detail-header">
+                    <div class="playlist-detail-cover" id="playlistDetailCover"><i class="fa-solid fa-heart"></i></div>
+                    <div class="playlist-detail-info">
+                        <p class="playlist-detail-type">Playlist</p>
+                        <h1 class="playlist-detail-title" id="playlistDetailTitle">Liked Songs</h1>
+                        <p class="playlist-detail-meta" id="playlistDetailMeta">0 songs</p>
+                    </div>
+                </div>
+
+
+                <div class="playlist-detail-toolbar">
+                    <button class="playlist-play-btn" id="playlistPlayBtn"><i class="fa-solid fa-play"></i></button>
+                    <i class="fa-solid fa-shuffle playlist-toolbar-icon" id="playlistShuffleBtn"></i>
+                    <div class="playlist-toolbar-spacer"></div>
+                    <div class="playlist-view-toggle" id="playlistViewToggle">
+                        <span id="playlistViewLabel">List</span> <i class="fa-solid fa-list"></i>
+                        <div class="playlist-view-menu" id="playlistViewMenu">
+                            <div class="view-menu-item active" data-mode="list">List</div>
+                            <div class="view-menu-item" data-mode="compact">Compact</div>
+                        </div>
+                    </div>
+                </div>
+                <table class="playlist-track-table" id="playlistTrackTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th class="pd-compact-only">Artist</th>
+                            <th class="pd-album-col">Album</th>
+                            <th class="pd-list-only">Date added</th>
+                            <th></th>
+                            <th><i class="fa-regular fa-clock"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="playlistTrackTableBody"></tbody>
+                </table>
+                <button class="playlist-back-btn" id="playlistDetailBackBtn" title="Back to Home"><i
+                        class="fa-solid fa-arrow-left"></i></button>
+            </div>
+
+            <div class="show-all-view" id="showAllView">
+                <div class="show-all-header">
+                    <button class="playlist-back-btn" id="showAllBackBtn" title="Back"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                    <h1 id="showAllTitle"></h1>
+                </div>
+                <div class="show-all-grid" id="showAllGrid"></div>
+            </div>
+
+            <div class="music-section">
+                <div class="music-section-header">
+                    <h2>Trending Now</h2>
+                    <span class="show-all-link" data-title="Trending Now" data-start="30" data-end="60">Show all</span>
+                </div>
+                <div class="songs-wrapper">
+                    <div class="songs" id="section-2"></div>
+                    <button class="scroll-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="scroll-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="music-section">
+                <div class="music-section-header">
+                    <h2>Sweet & Melancholy</h2>
+                    <span class="show-all-link" data-title="Sweet & Melancholy" data-start="60" data-end="">Show
+                        all</span>
+                </div>
+                <div class="songs-wrapper">
+                    <div class="songs" id="section-3"></div>
+                    <button class="scroll-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="scroll-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Now Playing Panel -->
+        <div class="now-playing-panel" id="nowPlayingPanel">
+            <div class="np-fullscreen-bg" id="npFullscreenBg"></div>
+            <button class="np-back-btn" id="npBackBtn"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="phone-frame">
+                <button class="np-fullscreen-btn" id="npFullscreenBtn">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+                <div class="np-art">
+                    <img id="npImage" src="" alt="">
+                </div>
+                <div class="np-info">
+                    <div class="np-info-text">
+                        <p class="np-device">PPLG</p>
+                        <h4 class="np-title" id="npTitle">No songs have been played yet.</h4>
+                        <p class="np-artist" id="npArtist"></p>
+                    </div>
+                    <i class="fa-solid fa-tower-broadcast np-info-icon"></i>
+                </div>
+                <div class="np-progress">
+                    <input type="range" class="np-progress-bar" id="npProgressBar" value="0">
+                </div>
+                <div class="np-time">
+                    <span id="npCurrentTime">0:00</span>
+                    <span id="npDuration">0:00</span>
+                </div>
+                <div class="np-controls">
+                    <i id="npBackward" class="fa-solid fa-backward"></i>
+                    <i id="npPlay" class="fa-solid fa-play"></i>
+                    <i id="npForward" class="fa-solid fa-forward"></i>
+                </div>
+                <div class="np-volume">
+                    <i class="fa-solid fa-volume-low"></i>
+                    <input type="range" id="npVolumeBar" min="0" max="100" value="100">
+                    <i class="fa-solid fa-volume-high"></i>
+                </div>
+                <div class="np-airplay">
+                    <i class="fa-solid fa-wifi"></i> PPLG
+                </div>
+            </div>
+        </div>
+
+        <!-- Queue Panel (menggantikan slot Now Playing Panel saat dibuka) -->
+        <div class="queue-panel" id="queuePanel">
+            <div class="queue-header">
+                <h3>Queue</h3>
+                <button id="queueCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="queue-body">
+                <span class="queue-section-title">Now playing</span>
+                <div id="queueNowPlaying"></div>
+                <div class="queue-next-header">
+                    <span class="queue-section-title">Next in queue</span>
+                    <span class="queue-clear-btn" id="queueClearBtn">Clear queue</span>
+                </div>
+                <div id="queueNextList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player -->
+    <div class="player-bar">
+        <div class="now-bar">
+            <img src="" alt="">
+            <div>
+                <div class="img-title-info"></div>
+                <div class="img-des-info"></div>
+            </div>
+            <button class="now-bar-like-btn" id="nowBarLikeBtn" title="Simpan ke Liked Songs">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
+        <div class="music-controller">
+            <div class="player">
+                <div><i id="shuffle" class="player-btns fa-solid fa-shuffle"></i></div>
+                <div><i id="backward" class="player-btns fa-solid fa-backward-step"></i></div>
+                <div><i id="play" class="player-btns fa-solid fa-circle-play"></i></div>
+                <div><i id="forward" class="player-btns fa-solid fa-forward-step"></i></div>
+                <div><i id="repeat" class="player-btns fa-solid fa-repeat"></i></div>
+            </div>
+
+            <div class="progress-wrap">
+                <span id="currentTime">0:00</span>
+                <input type="range" id="progressBar" value="0">
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <!-- Khusus mobile: tombol shuffle/play/repeat + garis progress di mini player -->
+        <div class="mini-controls">
+            <i id="miniShuffle" class="fa-solid fa-shuffle"></i>
+            <i id="miniPlay" class="fa-solid fa-play"></i>
+            <i id="miniRepeat" class="fa-solid fa-repeat"></i>
+        </div>
+        <div class="mini-progress">
+            <div class="mini-progress-fill" id="miniProgressFill"></div>
+        </div>
+
+        <div class="player-right-controls">
+            <button class="player-right-btn" id="queueBtn" title="Queue"><i class="fa-solid fa-list"></i></button>
+            <div class="volume-control">
+                <button class="player-right-btn" id="volumeBtn" title="Mute"><i
+                        class="fa-solid fa-volume-high"></i></button>
+                <input type="range" id="mainVolumeBar" min="0" max="100" value="100">
+            </div>
+            <button class="player-right-btn" id="miniPlayerBtn" title="Mini player"><i
+                    class="fa-regular fa-window-restore"></i></button>
+            <button class="player-right-btn" id="fullscreenPlayerBtn" title="Full screen"><i
+                    class="fa-solid fa-expand"></i></button>
+        </div>
+    </div>
+
+    <!-- Modal Notif -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <h3>Fitur Belum Tersedia</h3>
+            <p>Fitur ini sedang dalam tahap pengembangan.</p>
+            <button class="modal-close-btn" id="modalCloseBtn">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal Tambah ke Playlist -->
+    <div class="modal-overlay" id="addToPlaylistModal">
+        <div class="modal-box">
+            <h3>Tambah ke Playlist</h3>
+            <div id="addToPlaylistList" class="add-to-playlist-list"></div>
+            <div class="new-playlist-inline">
+                <input type="text" id="newPlaylistNameInput" placeholder="Nama playlist baru">
+                <button id="createPlaylistInlineBtn">Buat</button>
+            </div>
+            <button class="modal-close-btn" id="addToPlaylistCloseBtn">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal Riwayat -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-box">
+            <h3>Riwayat Diputar</h3>
+            <div id="historyList" class="add-to-playlist-list"></div>
+            <button class="modal-close-btn" id="historyModalCloseBtn">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal Buat Playlist -->
+    <div class="modal-overlay" id="createPlaylistModal">
+        <div class="modal-box create-playlist-modal-box">
+            <h3>Create a playlist</h3>
+            <p>Give your new playlist a name.</p>
+            <input type="text" id="createPlaylistModalInput" class="create-playlist-modal-input"
+                placeholder="My playlist name" maxlength="60">
+            <div class="modal-btn-row">
+                <button class="modal-secondary-btn" id="createPlaylistModalCancel">Cancel</button>
+                <button class="modal-close-btn" id="createPlaylistModalConfirm">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus Playlist -->
+    <div class="modal-overlay" id="deletePlaylistModal">
+        <div class="modal-box">
+            <h3>Remove from Your Library?</h3>
+            <p id="deletePlaylistModalText">This playlist will be removed from Your Library.</p>
+            <div class="modal-btn-row">
+                <button class="modal-secondary-btn" id="deletePlaylistModalCancel">Cancel</button>
+                <button class="modal-danger-btn" id="deletePlaylistModalConfirm">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav (khusus mobile) -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-item active" data-target="home">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </div>
+        <div class="bottom-nav-item" data-target="library">
+            <i class="fa-solid fa-list"></i>
+            <span>Library</span>
+        </div>
+        <a href="about.html" class="bottom-nav-item">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>About</span>
+        </a>
+        <a href="support.html" class="bottom-nav-item">
+            <i class="fa-solid fa-heart"></i>
+            <span>Support</span>
+        </a>
+    </div>
+    <div class="context-menu" id="songContextMenu">
+        <div class="context-menu-item" id="ctxAddToLibrary"><i class="fa-solid fa-heart"></i> Save to your Liked Songs
+        </div>
+        <div class="context-menu-item" id="ctxAddToQueue"><i class="fa-solid fa-layer-group"></i> Add to Queue</div>
+        <div class="context-menu-item" id="ctxAddToPlaylist"><i class="fa-solid fa-plus"></i> Add to Playlist</div>
+    </div>
+
+    <!-- Mini Player Popup -->
+    <div class="mini-player-popup" id="miniPlayerPopup">
+        <div class="mini-player-header">
+            <span>spotiware</span>
+            <div class="mini-player-header-btns">
+                <button id="miniPlayerExpandBtn" title="Full screen"><i
+                        class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+                <button id="miniPlayerCloseBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="mini-player-art"><img id="miniPlayerImage" src="" alt=""></div>
+        <div class="mini-player-controls">
+            <i class="fa-solid fa-shuffle" id="miniPopupShuffle"></i>
+            <i class="fa-solid fa-backward-step" id="miniPopupBackward"></i>
+            <button id="miniPopupPlay"><i class="fa-solid fa-play"></i></button>
+            <i class="fa-solid fa-forward-step" id="miniPopupForward"></i>
+            <i class="fa-solid fa-repeat" id="miniPopupRepeat"></i>
+        </div>
+        <div class="mini-player-progress">
+            <input type="range" id="miniPopupProgressBar" value="0">
+        </div>
+        <div class="mini-player-info">
+            <div>
+                <div class="mp-title" id="miniPopupTitle"></div>
+                <div class="mp-artist" id="miniPopupArtist"></div>
+            </div>
+            <button class="mini-player-like-btn" id="miniPopupLikeBtn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
