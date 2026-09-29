@@ -46,7 +46,7 @@ const songs = [
     { id: 42, songName: "Iris", songDes: "Pastel Ghost", songImage: "Art Cover/SpotiDown.App - Iris - Pastel Ghost.webp", songPath: "Lagu/SpotiDown.App - Iris - Pastel Ghost.mp3" },
     { id: 43, songName: "No. 1 Party Anthem", songDes: "Arctic Monkeys", songImage: "Art Cover/AM.webp", songPath: "Lagu/No. 1 Party Anthem.mp3" },
     { id: 44, songName: "nuts (feat. Rainy Bear)", songDes: "Lil Peep", songImage: "Art Cover/nuts (feat. Rainy Bear).webp", songPath: "Lagu/nuts (feat. Rainy Bear).mp3" },
-    { id: 45, songName: "505", songDes: "Arctic Monkeys", songImage: "Art Cover/505.webp", songPath: "Lagu/obsessed - slowed + reverb.mp3" },
+    { id: 45, songName: "505", songDes: "Arctic Monkeys", songImage: "Art Cover/505.webp", songPath: "Lagu/505.mp3" },
     { id: 46, songName: "Obsessed", songDes: "Mariah Carey", songImage: "Art Cover/Memoirs of an imperfect Angel (International Version).webp", songPath: "Lagu/Obsessed.mp3" },
     { id: 47, songName: "Paparazzi", songDes: "Lady Gaga", songImage: "Art Cover/The Fame.webp", songPath: "Lagu/Paparazzi.mp3" },
     { id: 48, songName: "PELIGROSA", songDes: "J Balvin, Wisin & Yandel", songImage: "Art Cover/EL COMIENZO.webp", songPath: "Lagu/PELIGROSA.mp3" },
@@ -565,7 +565,10 @@ function attachPlayEvents() {
 
             if (getCurrentSong().id === clickedId && playerBar.classList.contains('show')) {
                 if (audio.paused) {
-                    audio.play();
+                    audio.play().catch(err => {
+                        console.warn('Play gagal:', err);
+                        playNextSong();
+                    });
                     play.classList.remove('fa-circle-play');
                     play.classList.add('fa-circle-pause');
                     e.target.classList.remove('fa-circle-play');
@@ -585,7 +588,9 @@ function attachPlayEvents() {
 
             audio.src = getCurrentSong().songPath;
             audio.currentTime = 0;
-            audio.play();
+            audio.play().catch(err => {
+                console.warn('Play gagal:', err);
+            });
             addToHistory(getCurrentSong());
 
             playerBar.classList.add('show');
@@ -818,7 +823,10 @@ function renderHistory() {
 
             audio.src = getCurrentSong().songPath;
             audio.currentTime = 0;
-            audio.play();
+            audio.play().catch(err => {
+                console.warn('Play gagal:', err);
+                playNextSong();
+            });
 
             playerBar.classList.add('show');
             showNowPlayingPanel();
@@ -841,7 +849,9 @@ audio.addEventListener('loadedmetadata', () => {
 
 play.addEventListener('click', () => {
     if (audio.paused || audio.currentTime == 0) {
-        audio.play();
+        audio.play().catch(err => {
+            console.warn('Play gagal:', err);
+        });
         playerBar.classList.add('show');
         showNowPlayingPanel();
 
@@ -1050,7 +1060,10 @@ const playNextSong = () => {
     }
     audio.src = getCurrentSong().songPath;
     audio.currentTime = 0;
-    audio.play();
+    audio.play().catch(err => {
+        console.warn('Play gagal:', err);
+        playNextSong();
+    });
     addToHistory(getCurrentSong());
     highlightCurrentSong();
     updateNowBar();
@@ -1061,7 +1074,9 @@ const playPrevSong = () => {
     currentIndex = (currentIndex - 1 + order.length) % order.length;
     audio.src = getCurrentSong().songPath;
     audio.currentTime = 0;
-    audio.play();
+    audio.play().catch(err => {
+        console.warn('Play gagal:', err);
+    });
     addToHistory(getCurrentSong());
     highlightCurrentSong();
     updateNowBar();
@@ -1079,11 +1094,19 @@ if (npBackward) npBackward.addEventListener('click', playPrevSong);
 audio.addEventListener('ended', () => {
     if (songOnRepeat) {
         audio.currentTime = 0;
-        audio.play();
+        audio.play().catch(err => {
+        console.warn('Play gagal:', err);
+    });
     } else {
         playNextSong();
     }
 });
+
+audio.addEventListener('error', () => {
+    console.warn('Gagal memuat:', getCurrentSong().songPath);
+    playNextSong();
+});
+
 
 let npFullscreenBtn = document.getElementById('npFullscreenBtn');
 let npBackBtn = document.getElementById('npBackBtn');
@@ -1768,7 +1791,9 @@ function playSongFromList(songId, songList) {
 
     audio.src = getCurrentSong().songPath;
     audio.currentTime = 0;
-    audio.play();
+    audio.play().catch(err => {
+        console.warn('Play gagal:', err);
+    });
     addToHistory(getCurrentSong());
 
     playerBar.classList.add('show');
